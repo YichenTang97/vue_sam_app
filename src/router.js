@@ -5,22 +5,22 @@ const routes =  [
     path: "/",
     alias: "/login",
     name: "login",
-    component: () => import("./components/Login")
+    component: () => import("./components/LoginPage")
   },
   {
     path: "/intro",
     name: "intro",
-    component: () => import("./components/Intro")
+    component: () => import("./components/IntroPage")
   },
   {
     path: "/sam",
     name: "sam",
-    component: () => import("./components/SAM")
+    component: () => import("./components/MainPage")
   },
   {
     path: "/finish",
     name: "finish",
-    component: () => import("./components/Finish")
+    component: () => import("./components/FinishPage")
   }
 ];
 
