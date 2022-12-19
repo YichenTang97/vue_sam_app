@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-container>
-      <el-aside id="side-bar" width="200px">
+      <el-aside width="200px">
         <div>
           <h5>Vocalisation samples</h5>
           <el-menu default-active="1" class="el-menu-vertical">
