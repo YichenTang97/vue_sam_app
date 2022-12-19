@@ -21,7 +21,7 @@
           <el-progress :percentage="10" />
         </div>
       </el-aside>
-      
+
       <el-main>
         <el-scrollbar max-height="100vh">
           <el-row justify="center">
@@ -47,7 +47,8 @@
                       </el-popover>
                     </el-row>
                     <el-row class="scale" justify="space-between">
-                      <el-card class="clickable" v-for="val in 9" :key="val" :body-style="{ padding: '0px' }" shadow="hover">
+                      <el-card class="clickable" v-for="val in 9" :key="val" :body-style="{ padding: '0px' }"
+                        shadow="hover">
                         <img v-if="val % 2" :src="require(`@/assets/imgs/${s.type}_${(11 - val) / 2}.svg`)"
                           class="image" />
                       </el-card>
