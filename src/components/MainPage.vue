@@ -89,7 +89,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .el-aside {
   text-align: left;
   display: flex;
