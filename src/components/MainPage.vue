@@ -77,12 +77,12 @@ export default {
         {
           id: 1, title: 'How you think the speaker felt?', target: 'speaker',
           data: [{ id: 1, type: 'Valence', help: 'Rate how positive or negative the emotion you think the speaker felt, ranging from unpleasant feelings to pleasant feelings.' },
-          { id: 2, type: 'Arousal', help: 'Rate how excited or calm the emotion you think the speaker felt, ranging from frantic ecitement to relaxed or boredom.' }]
+          { id: 2, type: 'Arousal', help: 'Rate how excited or calm the emotion you think the speaker felt, ranging from frantic excitement to relaxed or boredom.' }]
         },
         {
           id: 2, title: 'How you feel?', target: 'participant',
           data: [{ id: 1, type: 'Valence', help: 'Rate how positive or negative the emotion is that you feel, ranging from unpleasant feelings to pleasant feelings.' },
-          { id: 2, type: 'Arousal', help: 'Rate how excited or apathetic the emotion is that you feel, ranging from frantic ecitement to sleepiness or boredom.' }]
+          { id: 2, type: 'Arousal', help: 'Rate how excited or apathetic the emotion is that you feel, ranging from frantic excitement to sleepiness or boredom.' }]
         }]
     }
   }
