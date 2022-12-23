@@ -23,14 +23,14 @@
         <p>You can select either a picture or a blank square like the following:</p>
         <el-row class="scale" justify="space-between">
           <el-card v-for="val in 9" :key="val" :body-style="{ padding: '0px' }"
-            :style="[val == 3 ? { 'border': '2px solid #4f98f2' } : {}]" shadow="never">
+            :style="[val == 3 ? { 'border': '2px solid #4f98f2' } : { 'border': '2px solid #ebeef5' }]" shadow="never">
             <img v-if="val % 2" :src="require(`@/assets/imgs/Valence_${(11 - val) / 2}.svg`)" class="image" />
           </el-card>
         </el-row>
 
         <el-row class="scale" justify="space-between">
           <el-card v-for="val in 9" :key="val" :body-style="{ padding: '0px' }"
-            :style="[val == 4 ? { 'border': '2px solid #4f98f2' } : {}]" shadow="never">
+            :style="[val == 4 ? { 'border': '2px solid #4f98f2' } : { 'border': '2px solid #ebeef5' }]" shadow="never">
             <img v-if="val % 2" :src="require(`@/assets/imgs/Arousal_${(11 - val) / 2}.svg`)" class="image" />
           </el-card>
         </el-row>

@@ -8,7 +8,8 @@
             <el-scrollbar class="side-bar">
               <el-menu-item v-for="i in 50" :key="i" :index="i.toString()" @click="changeVoc(i)">
                 <el-icon>
-                  <VideoPlay />
+                  <Check v-if="this.$store.state.vocalisationCompleted[i-1]" />
+                  <VideoPlay v-else />
                 </el-icon>
                 <span>Vocalisation {{ i }}</span>
               </el-menu-item>
@@ -51,9 +52,12 @@
                     </el-row>
                     <el-row class="scale" justify="space-between">
                       <el-card class="clickable" v-for="val in 9" :key="val" :body-style="{ padding: '0px' }"
-                        shadow="hover">
+                        shadow="hover" 
+                        :style="[10 - val == this.$store.state.ratings[scale.target][s.type][vocIdx-1] ? { 'border': '2px solid #4f98f2' } : { 'border': '2px solid #ebeef5' }]"
+                        @click="rate(scale.target, s.type, 10 - val)">
                         <img v-if="val % 2" :src="require(`@/assets/imgs/${s.name}_${(11 - val) / 2}.svg`)"
                           class="image" />
+                        <img v-else :src="require(`@/assets/imgs/empty.svg`)" class="image" />
                       </el-card>
                     </el-row>
                   </template>
@@ -71,6 +75,8 @@
 </template>
 
 <script>
+import SAMDataService from '@/services/SAMDataService';
+
 export default {
   name: "sam-page",
   data() {
@@ -86,8 +92,8 @@ export default {
         },
         {
           id: 2, title: 'How you feel?', target: 'participant',
-          data: [{ id: 1, name: 'Valence', type: 'Valence', help: 'Rate how positive or negative the emotion is that you feel, ranging from unpleasant feelings to pleasant feelings.' },
-          { id: 2, name: 'Arousal', type: 'Arousal', help: 'Rate how excited or apathetic the emotion is that you feel, ranging from frantic excitement to sleepiness or boredom.' }]
+          data: [{ id: 1, name: 'Valence', type: 'valence', help: 'Rate how positive or negative the emotion is that you feel, ranging from unpleasant feelings to pleasant feelings.' },
+          { id: 2, name: 'Arousal', type: 'arousal', help: 'Rate how excited or apathetic the emotion is that you feel, ranging from frantic excitement to sleepiness or boredom.' }]
         }]
     }
   },
@@ -102,6 +108,9 @@ export default {
       this.audio.onended = () => {
         this.isAudioPlaying = false;
       };
+    },
+    rate(target, type, rating) {
+      SAMDataService.rate(this.vocIdx - 1, target, type, rating) // Idx - 1 to convert to list indices
     }
   }
 }
