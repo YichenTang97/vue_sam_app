@@ -25,21 +25,21 @@ export default new Vuex.Store({
     }
  },
  mutations: {
-    UpdateUser (state, user) {
+    updateUser (state, user) {
         state.user.username = user.username;
         state.user.password = user.password;
     },
-    AuthUser (state, auth) {
+    authUser (state, auth) {
         state.user.authenticated = auth;
     },
 
-    UpdateVocalisationList (state, vocList) {
+    updateVocalisationList (state, vocList) {
         state.vocalisationList = vocList;
     },
-    CompleteVocalisation (state, idx) {
+    completeVocalisation (state, idx) {
         state.vocalisationCompleted[idx] = true;
     },
-    UpdateRating (state, payload) {
+    updateRating (state, payload) {
         state.ratings[payload.target][payload.type][payload.idx] = payload.rating;
     }
  }
