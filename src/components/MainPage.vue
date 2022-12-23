@@ -42,14 +42,14 @@
                     <el-row justify="center">
                       <el-popover placement="top" :width="500" trigger="hover" :content="s.help">
                         <template #reference>
-                          <p class="hint" style="max-width:50px">{{ s.type }}</p>
+                          <p class="hint" style="max-width:50px">{{ s.name }}</p>
                         </template>
                       </el-popover>
                     </el-row>
                     <el-row class="scale" justify="space-between">
                       <el-card class="clickable" v-for="val in 9" :key="val" :body-style="{ padding: '0px' }"
                         shadow="hover">
-                        <img v-if="val % 2" :src="require(`@/assets/imgs/${s.type}_${(11 - val) / 2}.svg`)"
+                        <img v-if="val % 2" :src="require(`@/assets/imgs/${s.name}_${(11 - val) / 2}.svg`)"
                           class="image" />
                       </el-card>
                     </el-row>
@@ -76,13 +76,13 @@ export default {
       scales: [
         {
           id: 1, title: 'How you think the speaker felt?', target: 'speaker',
-          data: [{ id: 1, type: 'Valence', help: 'Rate how positive or negative the emotion you think the speaker felt, ranging from unpleasant feelings to pleasant feelings.' },
-          { id: 2, type: 'Arousal', help: 'Rate how excited or calm the emotion you think the speaker felt, ranging from frantic excitement to relaxed or boredom.' }]
+          data: [{ id: 1, name: 'Valence', type: 'valence', help: 'Rate how positive or negative the emotion you think the speaker felt, ranging from unpleasant feelings to pleasant feelings.' },
+          { id: 2, name: 'Arousal', type: 'arousal', help: 'Rate how excited or calm the emotion you think the speaker felt, ranging from frantic excitement to relaxed or boredom.' }]
         },
         {
           id: 2, title: 'How you feel?', target: 'participant',
-          data: [{ id: 1, type: 'Valence', help: 'Rate how positive or negative the emotion is that you feel, ranging from unpleasant feelings to pleasant feelings.' },
-          { id: 2, type: 'Arousal', help: 'Rate how excited or apathetic the emotion is that you feel, ranging from frantic excitement to sleepiness or boredom.' }]
+          data: [{ id: 1, name: 'Valence', type: 'Valence', help: 'Rate how positive or negative the emotion is that you feel, ranging from unpleasant feelings to pleasant feelings.' },
+          { id: 2,  name: 'Arousal', type: 'Arousal', help: 'Rate how excited or apathetic the emotion is that you feel, ranging from frantic excitement to sleepiness or boredom.' }]
         }]
     }
   }
