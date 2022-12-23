@@ -6,7 +6,7 @@
           <h5>Vocalisation samples</h5>
           <el-menu default-active="1" class="el-menu-vertical">
             <el-scrollbar class="side-bar">
-              <el-menu-item v-for="i in 50" :key="i" :index="i.toString()">
+              <el-menu-item v-for="i in 50" :key="i" :index="i.toString()" @click="changeVoc(i)">
                 <el-icon>
                   <VideoPlay />
                 </el-icon>
@@ -28,8 +28,11 @@
             <el-col id="main-col" :xs="23" :sm="23" :md="22" :lg="18" :xl="13">
               <div>
                 <h2>Vocalisation {{ vocIdx }}</h2>
-                <el-icon class="clickable" size="70px">
+                <el-icon v-if="!isAudioPlaying" class="clickable" size="70px" @click="playAudio">
                   <VideoPlay />
+                </el-icon>
+                <el-icon v-else size="70px">
+                  <Headset />
                 </el-icon>
                 <p>Click to play</p>
               </div>
@@ -73,6 +76,8 @@ export default {
   data() {
     return {
       vocIdx: 1,
+      audio: new Audio(require(`@/assets/vocs/${this.$store.state.vocalisationList[0]}`)),
+      isAudioPlaying: false,
       scales: [
         {
           id: 1, title: 'How you think the speaker felt?', target: 'speaker',
@@ -82,8 +87,21 @@ export default {
         {
           id: 2, title: 'How you feel?', target: 'participant',
           data: [{ id: 1, name: 'Valence', type: 'Valence', help: 'Rate how positive or negative the emotion is that you feel, ranging from unpleasant feelings to pleasant feelings.' },
-          { id: 2,  name: 'Arousal', type: 'Arousal', help: 'Rate how excited or apathetic the emotion is that you feel, ranging from frantic excitement to sleepiness or boredom.' }]
+          { id: 2, name: 'Arousal', type: 'Arousal', help: 'Rate how excited or apathetic the emotion is that you feel, ranging from frantic excitement to sleepiness or boredom.' }]
         }]
+    }
+  },
+  methods: {
+    changeVoc(newIdx) {
+      this.vocIdx = newIdx;
+      this.audio = new Audio(require(`@/assets/vocs/${this.$store.state.vocalisationList[this.vocIdx - 1]}`));
+    },
+    playAudio() {
+      this.audio.play();
+      this.isAudioPlaying = true;
+      this.audio.onended = () => {
+        this.isAudioPlaying = false;
+      };
     }
   }
 }
