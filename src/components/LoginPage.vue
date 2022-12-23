@@ -16,12 +16,15 @@
           <el-button class="login-button" type="primary" @click="login">Login</el-button>
         </el-form-item>
       </el-form>
+      <el-button @click="demo">Demo mode</el-button>
     </el-card>
   </div>
 </template>
 
 <script>
-import router from '../router'
+import router from '../router';
+import SAMDataService from '@/services/SAMDataService';
+import { MockDB } from '@/services/DBService';
 
 export default {
   name: "login-page",
@@ -61,8 +64,12 @@ export default {
       if (!authSuccess) {
         this.$message.error("Username or password is invalid");
       } else {
-        router.push("/intro")
+        router.push("/intro");
       }
+    },
+    async demo() {
+      SAMDataService.registerDB(new MockDB());
+      router.push("/intro");
     }
   }
 };

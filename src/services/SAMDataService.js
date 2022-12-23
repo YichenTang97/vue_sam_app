@@ -21,6 +21,9 @@ class SAMDataService {
         store.commit("updateVocalisationList", vocList);
     }
 
+    registerDB(db) {
+        this.db = db;
+    }
 }
 
 export default new SAMDataService();
