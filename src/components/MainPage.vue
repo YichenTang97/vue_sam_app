@@ -18,8 +18,10 @@
         </div>
 
         <div>
-          <p>Your progress: {{this.$store.state.vocalisationCompleted.filter(Boolean).length}}/{{ this.$store.state.numVocalisations }} </p>
-          <el-progress :percentage="100*this.$store.state.vocalisationCompleted.filter(Boolean).length/this.$store.state.numVocalisations" />
+          <p>Your progress: {{ getNumCompleted() }}/{{ this.$store.state.numVocalisations }} </p>
+          <el-progress :percentage="100*getNumCompleted()/this.$store.state.numVocalisations" />
+          <el-button style="margin-top: 12px;" type="primary" 
+            :disabled="getNumCompleted() == this.$store.state.numVocalisations ? false : true" @click="finish">Save and complete</el-button>
         </div>
       </el-aside>
 
@@ -65,6 +67,7 @@
                 <p class="hint">*Hint: hover your mouse on the blue "Valence" and "Arousal" texts to see their meanings.
                 </p>
                 <p>You can select any image or the empty space between the images.</p>
+                <el-button v-if="this.$store.state.isDemo" @click="quickFillAll">Quick-fill all (demo mode only)</el-button>
               </div>
             </el-col>
           </el-row>
@@ -75,6 +78,7 @@
 </template>
 
 <script>
+import router from '@/router';
 import SAMDataService from '@/services/SAMDataService';
 
 export default {
@@ -110,7 +114,17 @@ export default {
       };
     },
     rate(target, type, rating) {
-      SAMDataService.rate(this.vocIdx - 1, target, type, rating) // Idx - 1 to convert to list indices
+      SAMDataService.rate(this.vocIdx - 1, target, type, rating); // Idx - 1 to convert to list indices
+    },
+    getNumCompleted() {
+      return this.$store.state.vocalisationCompleted.filter(Boolean).length;
+    },
+    quickFillAll() {
+      SAMDataService.quickFillAll();
+    },
+    async finish() {
+      SAMDataService.save();
+      router.push('/finish');
     }
   }
 }
@@ -156,7 +170,7 @@ export default {
 }
 
 .side-bar {
-  height: calc(100vh - 160px);
+  height: calc(100vh - 200px);
 }
 
 .hint {

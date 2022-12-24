@@ -25,6 +25,7 @@
 import router from '../router';
 import SAMDataService from '@/services/SAMDataService';
 import { MockDB } from '@/services/DBService';
+import store from '@/store';
 
 export default {
   name: "login-page",
@@ -68,6 +69,11 @@ export default {
       }
     },
     async demo() {
+      store.commit("setDemoMode", true);
+      store.commit("updateUser", {
+        username: 'demo',
+        password: 'demo'
+      })
       SAMDataService.registerDB(new MockDB());
       router.push("/intro");
     }

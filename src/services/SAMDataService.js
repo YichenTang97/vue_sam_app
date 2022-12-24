@@ -44,12 +44,39 @@ class SAMDataService {
 
     vocalisationCompleted(vocIdx) {
         // return false if exists any unrated scales
-        for (let target in store.state.ratings){
-            for (let type in store.state.ratings[target]){
-                if (isNaN(store.state.ratings[target][type][vocIdx])) {return false;}
+        for (let target in store.state.ratings) {
+            for (let type in store.state.ratings[target]) {
+                if (isNaN(store.state.ratings[target][type][vocIdx])) { return false; }
             }
         }
         return true;
+    }
+
+    quickFillAll() {
+        let targets = ['speaker', 'participant'];
+        let types = ['valence', 'arousal'];
+        targets.forEach((target) => {
+            types.forEach((type) => {
+                for (let i = 0; i < store.state.numVocalisations; i++) {
+                    this.rate(i, target, type, 5);
+                }
+            })
+        })
+    }
+
+    save() {
+        this.db.save();
+        this.db.saveCSV(this.getRatingsCSV());
+    }
+
+    getRatingsCSV() {
+        let csvContent = "data:text/csv;charset=utf-8,"
+            + "," + store.state.vocalisationList.join(",") + "\r\n"
+            + "Speaker_Valence," + store.state.ratings['speaker']['valence'].join(",") + "\r\n"
+            + "Speaker_Arousal," + store.state.ratings['speaker']['arousal'].join(",") + "\r\n"
+            + "Participant_Valence," + store.state.ratings['participant']['valence'].join(",") + "\r\n"
+            + "Participant_Arousal," + store.state.ratings['participant']['arousal'].join(",") + "\r\n";
+        return csvContent;
     }
 }
 

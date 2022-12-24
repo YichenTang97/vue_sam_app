@@ -9,7 +9,7 @@ export default new Vuex.Store({
         password: '',
         authenticated: false
     },
-
+    isDemo: false,
     numVocalisations: numVocalisations,
     vocalisationList: [],
     vocalisationCompleted: new Array(numVocalisations).fill(false),
@@ -32,7 +32,9 @@ export default new Vuex.Store({
     authUser (state, auth) {
         state.user.authenticated = auth;
     },
-
+    setDemoMode (state, isDemo) {
+        state.isDemo = isDemo;
+    },
     updateVocalisationList (state, vocList) {
         state.vocalisationList = vocList;
     },
