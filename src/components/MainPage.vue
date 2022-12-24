@@ -18,8 +18,8 @@
         </div>
 
         <div>
-          <p>Your progress: {{this.$store.state.vocalisationCompleted.filter(Boolean).length}}/50 </p>
-          <el-progress :percentage="this.$store.state.vocalisationCompleted.filter(Boolean).length*2" />
+          <p>Your progress: {{this.$store.state.vocalisationCompleted.filter(Boolean).length}}/{{ this.$store.state.numVocalisations }} </p>
+          <el-progress :percentage="100*this.$store.state.vocalisationCompleted.filter(Boolean).length/this.$store.state.numVocalisations" />
         </div>
       </el-aside>
 
