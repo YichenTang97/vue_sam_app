@@ -24,7 +24,7 @@
 <script>
 import router from '../router';
 import SAMDataService from '@/services/SAMDataService';
-import { MockDB } from '@/services/DBService';
+import { FirestoreDB, MockDB } from '@/services/DBService';
 import store from '@/store';
 import { auth } from "@/firebaseInit";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -76,9 +76,15 @@ export default {
 
       // authenticate on firebase
       signInWithEmailAndPassword(auth, this.model.username + emailSurfix, this.model.password)
-        .then(() => {
+        .then((userCredential) => {
           this.loading = false;
           this.$store.commit("authUser", true);
+          this.$store.commit("setUID", userCredential.user.uid);
+          // also set demo mode for quick testing for the test user
+          if (this.$store.state.testUser == this.$store.state.user.username) {
+            store.commit("setDemoMode", true);
+          }
+          SAMDataService.registerDB(new FirestoreDB());
           router.push("/intro");
         })
         .catch(error => {

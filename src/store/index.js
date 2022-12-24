@@ -7,8 +7,10 @@ export default new Vuex.Store({
     user: {
         username: '',
         password: '',
-        authenticated: false
+        authenticated: false,
+        uid: ''
     },
+    testUser: "test",
     isDemo: false,
     numVocalisations: numVocalisations,
     vocalisationList: [],
@@ -31,6 +33,9 @@ export default new Vuex.Store({
     },
     authUser (state, auth) {
         state.user.authenticated = auth;
+    },
+    setUID (state, uid) {
+        state.user.uid = uid;
     },
     setDemoMode (state, isDemo) {
         state.isDemo = isDemo;

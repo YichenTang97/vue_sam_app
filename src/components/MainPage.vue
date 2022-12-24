@@ -8,7 +8,7 @@
             <el-scrollbar class="side-bar">
               <el-menu-item v-for="i in 50" :key="i" :index="i.toString()" @click="changeVoc(i)">
                 <el-icon>
-                  <Check v-if="this.$store.state.vocalisationCompleted[i-1]" />
+                  <Check v-if="this.$store.state.vocalisationCompleted[i - 1]" />
                   <VideoPlay v-else />
                 </el-icon>
                 <span>Vocalisation {{ i }}</span>
@@ -19,9 +19,10 @@
 
         <div>
           <p>Your progress: {{ getNumCompleted() }}/{{ this.$store.state.numVocalisations }} </p>
-          <el-progress :percentage="100*getNumCompleted()/this.$store.state.numVocalisations" />
-          <el-button style="margin-top: 12px;" type="primary" 
-            :disabled="getNumCompleted() == this.$store.state.numVocalisations ? false : true" @click="finish">Save and complete</el-button>
+          <el-progress :percentage="100 * getNumCompleted() / this.$store.state.numVocalisations" />
+          <el-button style="margin-top: 12px;" type="primary" :loading="saving"
+            :disabled="getNumCompleted() == this.$store.state.numVocalisations ? false : true" @click="finish">Save and
+            complete</el-button>
         </div>
       </el-aside>
 
@@ -54,8 +55,8 @@
                     </el-row>
                     <el-row class="scale" justify="space-between">
                       <el-card class="clickable" v-for="val in 9" :key="val" :body-style="{ padding: '0px' }"
-                        shadow="hover" 
-                        :style="[10 - val == this.$store.state.ratings[scale.target][s.type][vocIdx-1] ? { 'border': '2px solid #4f98f2' } : { 'border': '2px solid #ebeef5' }]"
+                        shadow="hover"
+                        :style="[10 - val == this.$store.state.ratings[scale.target][s.type][vocIdx - 1] ? { 'border': '2px solid #4f98f2' } : { 'border': '2px solid #ebeef5' }]"
                         @click="rate(scale.target, s.type, 10 - val)">
                         <img v-if="val % 2" :src="require(`@/assets/imgs/${s.name}_${(11 - val) / 2}.svg`)"
                           class="image" />
@@ -67,7 +68,8 @@
                 <p class="hint">*Hint: hover your mouse on the blue "Valence" and "Arousal" texts to see their meanings.
                 </p>
                 <p>You can select any image or the empty space between the images.</p>
-                <el-button v-if="this.$store.state.isDemo" @click="quickFillAll">Quick-fill all (demo mode only)</el-button>
+                <el-button v-if="this.$store.state.isDemo" @click="quickFillAll">Quick-fill all (demo mode
+                  only)</el-button>
               </div>
             </el-col>
           </el-row>
@@ -88,6 +90,7 @@ export default {
       vocIdx: 1,
       audio: new Audio(require(`@/assets/vocs/${this.$store.state.vocalisationList[0]}`)),
       isAudioPlaying: false,
+      saving: false,
       scales: [
         {
           id: 1, title: 'How you think the speaker felt?', target: 'speaker',
@@ -123,9 +126,17 @@ export default {
     quickFillAll() {
       SAMDataService.quickFillAll();
     },
-    async finish() {
-      SAMDataService.save();
-      router.push('/finish');
+    finish() {
+      this.saving = true;
+      SAMDataService.save((res) => {
+        if (res.success) {
+          this.saving = false;
+          console.log("Final ratings successfully saved with id: " + res.docRef.id);
+          router.push('/finish');
+        } else {
+          console.log(res.error);
+        }
+      });
     }
   }
 }

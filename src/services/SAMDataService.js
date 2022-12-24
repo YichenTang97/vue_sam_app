@@ -64,9 +64,20 @@ class SAMDataService {
         })
     }
 
-    save() {
-        this.db.save();
-        this.db.saveCSV(this.getRatingsCSV());
+    async save(callback) {
+        try {
+            const docRef = await this.db.save();
+            this.db.saveCSV(this.getRatingsCSV());
+            callback({
+                success: true,
+                docRef: docRef
+            })
+        } catch (e) {
+            callback({
+                success: false,
+                error: e
+            })
+        }
     }
 
     getRatingsCSV() {
