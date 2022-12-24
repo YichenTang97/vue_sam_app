@@ -100,6 +100,7 @@ export default {
         username: 'demo',
         password: 'demo'
       })
+      this.$store.commit("authUser", true);
       SAMDataService.registerDB(new MockDB());
       router.push("/intro");
     }
