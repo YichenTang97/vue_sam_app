@@ -132,6 +132,7 @@ export default {
         if (res.success) {
           this.saving = false;
           console.log("Final ratings successfully saved with id: " + res.docRef.id);
+          console.log("CSV saved at: " + res.snapshot.metadata.fullPath);
           router.push('/finish');
         } else {
           console.log(res.error);

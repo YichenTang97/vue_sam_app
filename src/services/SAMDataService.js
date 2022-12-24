@@ -67,10 +67,11 @@ class SAMDataService {
     async save(callback) {
         try {
             const docRef = await this.db.save();
-            this.db.saveCSV(this.getRatingsCSV());
+            const snapshot = await this.db.saveCSV(this.getRatingsCSV());
             callback({
                 success: true,
-                docRef: docRef
+                docRef: docRef,
+                snapshot: snapshot
             })
         } catch (e) {
             callback({
@@ -81,8 +82,8 @@ class SAMDataService {
     }
 
     getRatingsCSV() {
-        let csvContent = "data:text/csv;charset=utf-8,"
-            + "," + store.state.vocalisationList.join(",") + "\r\n"
+        let csvContent = ","
+            + store.state.vocalisationList.join(",") + "\r\n"
             + "Speaker_Valence," + store.state.ratings['speaker']['valence'].join(",") + "\r\n"
             + "Speaker_Arousal," + store.state.ratings['speaker']['arousal'].join(",") + "\r\n"
             + "Participant_Valence," + store.state.ratings['participant']['valence'].join(",") + "\r\n"

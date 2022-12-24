@@ -1,6 +1,7 @@
-import { firestore } from "@/firebaseInit";
+import { firestore, storage } from "@/firebaseInit";
 import store from "@/store";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { ref, uploadBytes } from "firebase/storage";
 
 class MockDB {
     // eslint-disable-next-line no-unused-vars
@@ -15,12 +16,21 @@ class MockDB {
     }
 
     // eslint-disable-next-line no-unused-vars
-    saveCSV(csvContent) { }
+    saveCSV(csvContent) {
+        return new Promise((myResolve) => {
+            myResolve({
+                metadata: {
+                    fullPath: 'demoPath'
+                }
+            });
+        });
+    }
 }
 
 class FirestoreDB {
     constructor() {
         this.db = firestore;
+        this.storage = storage;
     }
 
     async newRating(speaker, emotion, target, type, rating) {
@@ -47,8 +57,12 @@ class FirestoreDB {
         });
     }
 
-    // eslint-disable-next-line no-unused-vars
-    saveCSV(csvContent) { }
+    saveCSV(csvContent) {
+        const blob = new Blob([csvContent], { type: "text/csv" });
+        const storageRef = ref(storage, `users/${store.state.user.uid}/ratings_${store.state.user.username}_${new Date().toISOString()}.csv`);
+
+        return uploadBytes(storageRef, blob);
+    }
 }
 
 export { MockDB, FirestoreDB };

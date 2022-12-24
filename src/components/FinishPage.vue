@@ -20,13 +20,12 @@ export default {
       router.push("/sam")
     },
     downloadCSV() {
-      var encodedUri = encodeURI(SAMDataService.getRatingsCSV());
-      var link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", `ratings_${this.$store.state.user.username}_${new Date().toISOString()}.csv`);
-      document.body.appendChild(link); // Required for FF
-
-      link.click();
+      const blob = new Blob([SAMDataService.getRatingsCSV()], { type: "text/csv"});
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.setAttribute('href', url);
+      a.setAttribute('download', `ratings_${this.$store.state.user.username}_${new Date().toISOString()}.csv`);
+      a.click();
     }
   }
 };
