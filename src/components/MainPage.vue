@@ -18,8 +18,8 @@
         </div>
 
         <div>
-          <p>Your progress: TODO/50 </p>
-          <el-progress :percentage="10" />
+          <p>Your progress: {{this.$store.state.vocalisationCompleted.filter(Boolean).length}}/50 </p>
+          <el-progress :percentage="this.$store.state.vocalisationCompleted.filter(Boolean).length*2" />
         </div>
       </el-aside>
 
