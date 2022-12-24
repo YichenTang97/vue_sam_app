@@ -26,7 +26,7 @@
       </el-aside>
 
       <el-main>
-        <el-scrollbar max-height="100vh">
+        <el-scrollbar max-height="100vh" ref="mainScrollbarRef">
           <el-row justify="center">
             <el-col id="main-col" :xs="23" :sm="23" :md="22" :lg="18" :xl="13">
               <div>
@@ -105,6 +105,7 @@ export default {
     changeVoc(newIdx) {
       this.vocIdx = newIdx;
       this.audio = new Audio(require(`@/assets/vocs/${this.$store.state.vocalisationList[this.vocIdx - 1]}`));
+      this.$refs.mainScrollbarRef.setScrollTop(0); // back to top
     },
     playAudio() {
       this.audio.play();
