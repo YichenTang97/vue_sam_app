@@ -13,7 +13,7 @@
           <el-input v-model="model.password" placeholder="Password" type="password"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button class="login-button" type="primary" @click="login">Login</el-button>
+          <el-button class="login-button" type="primary" :loading="loading" @click="login">Login</el-button>
         </el-form-item>
       </el-form>
       <el-button @click="demo">Demo mode</el-button>
@@ -26,6 +26,10 @@ import router from '../router';
 import SAMDataService from '@/services/SAMDataService';
 import { MockDB } from '@/services/DBService';
 import store from '@/store';
+import { auth } from "@/firebaseInit";
+import { signInWithEmailAndPassword } from "firebase/auth";
+
+const emailSurfix = "@mockdomain.com";
 
 export default {
   name: "login-page",
@@ -35,6 +39,7 @@ export default {
         username: "",
         password: ""
       },
+      loading: false,
       rules: {
         username: [
           {
@@ -61,12 +66,27 @@ export default {
         return;
       }
 
-      let authSuccess = false // TODO: authenticate on firebase
-      if (!authSuccess) {
-        this.$message.error("Username or password is invalid");
-      } else {
-        router.push("/intro");
-      }
+      this.loading = true;
+
+      // update store
+      this.$store.commit("updateUser", {
+        username: this.model.username,
+        password: this.model.password
+      });
+
+      // authenticate on firebase
+      signInWithEmailAndPassword(auth, this.model.username + emailSurfix, this.model.password)
+        .then(() => {
+          this.loading = false;
+          this.$store.commit("authUser", true);
+          router.push("/intro");
+        })
+        .catch(error => {
+          this.loading = false;
+          console.log(error.code);
+          console.log(error.message);
+          this.$message.error("Username or password is invalid");
+        });
     },
     async demo() {
       store.commit("setDemoMode", true);
