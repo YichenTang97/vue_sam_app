@@ -82,6 +82,7 @@
 <script>
 import router from '@/router';
 import SAMDataService from '@/services/SAMDataService';
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 export default {
   name: "sam-page",
@@ -135,6 +136,35 @@ export default {
           console.log("CSV saved at: " + res.snapshot.metadata.fullPath);
           router.push('/finish');
         } else {
+          this.saving = false;
+          ElMessageBox.confirm(
+            'Data upload failed. Download your ratings manually?',
+            'Error',
+            {
+              confirmButtonText: 'Download',
+              cancelButtonText: 'Cancel',
+              type: 'error',
+            }
+          )
+            .then(() => {
+              const blob = new Blob([SAMDataService.getRatingsCSV()], { type: "text/csv" });
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.setAttribute('href', url);
+              a.setAttribute('download', `ratings_${this.$store.state.user.username}_${new Date().toISOString()}.csv`);
+              a.click();
+              router.push('/finish');
+              ElMessage({
+                type: 'success',
+                message: 'Dowloading ratings.',
+              });
+            })
+            .catch(() => {
+              ElMessage({
+                type: 'info',
+                message: 'Canceled - please retry saving your ratings.',
+              });
+            })
           console.log(res.error);
         }
       });
